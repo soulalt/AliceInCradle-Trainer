@@ -57,7 +57,8 @@
 
 ### 方式一：下载压缩包（推荐普通玩家）
 
-1. 到本仓库右侧 **Releases** 页面，下载最新的 `AliceInCradle-Trainer-vX.X.zip`
+1. 到 **[Releases](https://github.com/soulalt/AliceInCradle-Trainer/releases/latest)** 页面，
+   下载 `AliceInCradle-Trainer-v1.1.zip`（以后升级同理，文件名里带版本号）
 2. 解压得到 `AIC修改器` 文件夹
 3. 把整个 `AIC修改器` 文件夹**放进游戏根目录**（与 `AliceInCradle.exe` 同级）：
 
@@ -78,7 +79,7 @@ Alice in Cradle/              ← 游戏根目录
 ### 方式二：克隆仓库
 
 ```bat
-git clone https://github.com/<你的用户名>/AliceInCradle-Trainer.git
+git clone https://github.com/soulalt/AliceInCradle-Trainer.git
 ```
 
 把克隆下来的文件夹重命名成 `AIC修改器`、放进游戏根目录即可（名字随意，启动脚本用的是自身路径）。
