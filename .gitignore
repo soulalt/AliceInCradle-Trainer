@@ -1,0 +1,24 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ---- 本工具的运行时数据（含玩家本地路径 / 存档备份，绝不能提交）----
+config/
+backup/
+logs/
+*.log
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ---- 打包产物 ----
+*.zip
+dist/
+build/
