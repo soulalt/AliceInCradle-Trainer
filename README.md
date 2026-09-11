@@ -22,7 +22,7 @@
 ## 这是什么
 
 一个**纯 Python 写的外部内存修改器**，用于单机游戏 **《爱丽丝的摇篮 / Alice in Cradle》**
-（Unity + Mono，64 位，面向 v0.29a 开发）。
+（Unity + Mono，64 位，支持 **v0.30f**，并兼容 v0.29a）。
 
 和常见的修改器不同，它把「扫描内存 → 反复筛选 → 定位地址」这一整套专业流程，
 **包装成了"填一次数字 + 点几下按钮"**：
@@ -58,9 +58,10 @@
 ### 方式一：下载压缩包（推荐普通玩家）
 
 1. 到 **[Releases](https://github.com/soulalt/AliceInCradle-Trainer/releases/latest)** 页面，
-   下载 `AliceInCradle-Trainer-v1.1.zip`（以后升级同理，文件名里带版本号）
+   下载 `AliceInCradle-Trainer-v1.2.zip`（以后升级同理，文件名里带版本号）
 2. 解压得到 `AIC修改器` 文件夹
-3. 把整个 `AIC修改器` 文件夹**放进游戏根目录**（与 `AliceInCradle.exe` 同级）：
+3. 把整个 `AIC修改器` 文件夹**放进游戏根目录**（与 `AliceInCradle.exe` 同级）；
+   **v0.30 的解压包是多层目录**，放进最外层也可以，工具会自己往下找：
 
 ```
 Alice in Cradle/              ← 游戏根目录

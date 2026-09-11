@@ -131,6 +131,47 @@ def test_saves(tmp: Path) -> None:
           any(i.tag == "prerestore" for i in saves.list_backups()))
 
 
+def test_nested_detection(tmp: Path) -> None:
+    """v0.30 官方压缩包解开后是多层嵌套目录，工具放在外层也要能认出游戏。
+
+    真实结构（0.30）：
+        q4n584J5_AliceInCradle Win ver030f/     ← 玩家解压后第一眼看到的层
+            AliceInCradle Win ver030/
+                AliceInCradle_ver030/           ← 真正的游戏根目录（有 exe）
+    """
+    print("\n—— 嵌套目录探测（v0.30 结构）——")
+    outer = tmp / "Win ver030f"
+    mid = outer / "AliceInCradle Win ver030"
+    root = mid / "AliceInCradle_ver030"
+    root.mkdir(parents=True)
+    (root / "AliceInCradle.exe").write_bytes(b"")
+    (root / "AliceInCradle_Data").mkdir()
+
+    check("游戏根被正确识别", paths.is_game_dir(root))
+
+    # 1) 手动指定外层目录时，能向下找到游戏根。
+    #    注意：跑测试时工具本身就在真实游戏目录里，_self_relative() 会抢先命中，
+    #    所以先临时把它屏蔽掉，才能测到「显式目录 + 向下遍历」这条分支。
+    orig_self = paths._self_relative
+    paths._self_relative = lambda: None         # type: ignore[assignment]
+    try:
+        found = paths.find_game_dir(str(outer))
+    finally:
+        paths._self_relative = orig_self        # type: ignore[assignment]
+    check("指定外层目录 → 向下找到游戏根", found == root, str(found))
+
+    # 2) 工具放在外层目录里（_self_relative 向上找不到 exe，必须靠向下兜底）
+    tools = outer / "AIC修改器"
+    tools.mkdir()
+    orig_app_root = paths.app_root
+    paths.app_root = lambda: tools          # type: ignore[assignment]
+    try:
+        found = paths._self_relative()
+        check("工具放外层 → 按相对位置自动认出游戏", found == root, str(found))
+    finally:
+        paths.app_root = orig_app_root      # type: ignore[assignment]
+
+
 def test_paths() -> None:
     print("\n—— 路径探测 ——")
     check("游戏目录可识别", paths.is_game_dir(GAME_DIR), str(GAME_DIR))
@@ -155,6 +196,7 @@ def main() -> int:
         tmp = Path(td)
         test_debug_flags(tmp)
         test_saves(tmp)
+        test_nested_detection(tmp)
     test_paths()
 
     print()

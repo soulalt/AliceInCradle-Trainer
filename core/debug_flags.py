@@ -15,6 +15,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 # 键名 -> 中文说明（说明来自游戏自带注释）
+#
+# 兼容版本：v0.29a / v0.30f。
+# v0.30 在 _debug.txt 里新增了 streaming、nocomputeshader 两个开关（见文件末尾），
+# 官方注释写得很简略，这里按实际作用补了中文说明。旧版没有这两行时不会出现在面板上。
 FLAG_INFO: dict[str, str] = {
     "DEBUG": "总调试开关（游戏自带的开关总闸，保持 1）",
     "mighty": "攻击力超强：普通攻击即可秒掉小怪",
@@ -36,11 +40,16 @@ FLAG_INFO: dict[str, str] = {
     "benchmark": "性能基准模式",
     "stabilize_draw": "稳定绘制（降低卡顿）",
     "_player": "玩家内部开关（建议保持 0）",
+    # ---- v0.30 新增 ----
+    "streaming": "直播模式（作者直播时使用，会隐藏部分画面内容）",
+    "nocomputeshader": "禁用 Compute Shader（画面异常或显卡驱动不兼容时可试）",
 }
 
 # 面板上按这个顺序展示
 PANEL_ORDER = ["DEBUG", "mighty", "nodamage", "allskill", "albumunlock",
-               "announce", "timestamp", "weak", "noevent", "novoice"]
+               "announce", "timestamp", "weak", "noevent", "novoice",
+               "streaming", "nocomputeshader"]
+
 
 F7_MENU_KEYS = ("announce", "timestamp")
 

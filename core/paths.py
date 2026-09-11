@@ -130,8 +130,12 @@ def is_game_dir(p: Path) -> bool:
 def _self_relative() -> Path | None:
     """修改器直接放在游戏目录里（或紧邻其下）时，按相对位置认出来 —— 最可靠。
 
-    依次看 app_root() 的上 1~3 层：容忍 AIC修改器/ 直接躺在游戏根目录，
+    依次看 app_root() 上 1~3 层：容忍 AIC修改器/ 直接躺在游戏根目录，
     或躺在游戏根目录下的某个子文件夹里。
+
+    找不到就再从**父目录往下浅搜**：v0.30 的官方压缩包解开后是多层嵌套
+    （`...Win ver030f/AliceInCradle Win ver030/AliceInCradle_ver030/`），
+    玩家很容易把 `AIC修改器/` 放在最外层，这时向上是找不到 exe 的。
     """
     base = app_root()
     up = base
@@ -144,6 +148,18 @@ def _self_relative() -> Path | None:
                 return up
         except OSError:
             continue
+
+    # 向下兜底：从父目录起浅搜，能穿透 v0.30 那种两层套娃的解压目录
+    parent = base.parent
+    if parent != base:
+        try:
+            for sub in _walk_limited(parent, max_depth=3):
+                if sub == base:
+                    continue
+                if is_game_dir(sub):
+                    return sub
+        except OSError:
+            pass
     return None
 
 
